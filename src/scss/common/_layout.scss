@@ -1,0 +1,18 @@
+section {
+    opacity: 0;
+    transform: translateY(200px);
+    transition: 1s;
+    &.on {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    .inner {
+        width: 1180px;
+        margin: 100px auto;
+        position: relative;
+        
+        h1 {
+            margin-bottom: 50px;
+        }
+    }
+}

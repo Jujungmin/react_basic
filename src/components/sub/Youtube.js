@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 
 function Youtube() {
+  const frame = useRef(null);
+
+  useEffect(() => {
+    frame.current.classList.add('on');
+  }, []);
+
   return (
-    <div>Youtube</div>
+    <section className='youtube' ref={frame}>
+      <div className='inner'>
+        <div>Youtube</div>
+      </div>
+    </section>
   )
 }
 
