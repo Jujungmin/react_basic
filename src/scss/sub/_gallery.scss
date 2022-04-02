@@ -14,7 +14,7 @@
 	}
 }
 .popup {
-	position: fixed; width: 100%; height: 100vh; background: rgba(0,0,0,0.9); top: 0px; left: 0px; padding: 5vw;
+	position: fixed; width: 100%; height: 100vh; background: rgba(0,0,0,0.9); top: 0px; left: 0px; padding: 5vw 5vw 7vw; text-align: center;
 	span {
 		position: absolute; top: 3vw; right: 5vw; font: bold 14px/1 'arial'; color: #fff; cursor: pointer;
 	}
@@ -25,6 +25,6 @@
 		}
 	}
 	p {
-		font: 12px/1 'arial'; color: #fff;
+		font: 12px/1 'arial'; color: #fff; margin-top: 20px;
 	}
 }

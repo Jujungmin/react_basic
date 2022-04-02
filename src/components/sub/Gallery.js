@@ -61,6 +61,11 @@ function Gallery() {
 	);
 
 	function Popup() {
+		useEffect(() => {
+			document.body.style.overflow = 'hidden';
+			return  () => document.body.style.ovlerflow = 'auto';
+		}, []);
+
 		return (
 			<aside className="popup">
 				<div className="pic">
