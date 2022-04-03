@@ -6,7 +6,7 @@ section {
         opacity: 1;
         transform: translateY(0px);
     }
-    .inner {
+    > .inner {
         width: 1180px;
         margin: 100px auto;
         position: relative;

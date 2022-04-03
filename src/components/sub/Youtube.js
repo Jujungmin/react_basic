@@ -12,47 +12,70 @@ function Youtube() {
   const url = `https://www.googleapis.com/youtube/v3/playlistItems?key=${api_key}&playlistId=${play_list}&maxResults=3&part=snippet`;
 
 
-  useEffect(() => {
-    frame.current.classList.add('on');
+	useEffect(() => {
+		frame.current.classList.add('on');
 
-    axios.get(url).then(json => {
-      console.log(json);
-      setItems(json.data.items);
-    })
-  }, []);
+		axios.get(url).then((json) => {
+			console.log(json.data.items);
+			setItems(json.data.items);
+		});
+	}, []);
 
-  return (
-    <>
-    <section className='gallery' ref={frame}>
-      <div className='inner'>
-        <h1>Youtube</h1>
-          {items.map((item, idx) => {
-            return (
-              <article key={idx} onClick={() => setIsPop(!isPop)}>
-              <div className='inner'>
-                <div className="pic">
-                  <img src={item.snippet.thumbnails.medium.url}/>
-                </div>
-              </div>
-            </article>
-            )
-          })}
-      </div>
-    </section>
+	return (
+		<>
+			<section className='youtube' ref={frame}>
+				<div className='inner'>
+					<h1>Youtube</h1>
+					{items.map((item, idx) => {
+						let desc = item.snippet.description;
+						let desc_len = desc.length;
+						let date = item.snippet.publishedAt;
 
-    {isPop ? <Popup/> : null}
-    </>
-  );
+						return (
+							<article
+								key={idx}
+								onClick={() => {
+									setIsPop(!isPop);
+                  setIndex(idx);
+								}}>
+								<div className='inner'>
+									<div className='pic'>
+										<img src={item.snippet.thumbnails.medium.url} />
+									</div>
+									<h2>{item.snippet.title}</h2>
+									<p>{desc_len > 200 ? desc.substr(0, 200) + '...' : desc}</p>
+									<span>{date.split('T')[0]}</span>
+								</div>
+							</article>
+						);
+					})}
+				</div>
+			</section>
 
-  function Popup() {
-    return (
-      <aside className='popup'>
-        <div className="pic">
-          </div>
-        <span onClick={() => setItems(!isPop)}>close</span>
-      </aside>
-    );
-  }
+			{isPop ? <Popup /> : null}
+		</>
+	);
+
+	function Popup() {
+		useEffect(() => {
+			// console.log('pop');
+			document.body.style.overflow = 'hidden';
+
+			return () => {
+				document.body.style.overflow = 'auto';
+			};
+		}, []);
+
+		return (
+			<aside className='popup'>
+        <iframe src={
+						'https://www.youtube.com/embed/' +
+						items[index].snippet.resourceId.videoId
+					} frameBorder='0'></iframe>
+				<span onClick={() => setIsPop(!isPop)}>close</span>
+			</aside>
+		);
+	}
 }
 
 export default Youtube;
