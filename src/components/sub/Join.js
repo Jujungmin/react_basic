@@ -25,10 +25,22 @@ function Join() {
 		// console.log(val);
 	}
 
+	// 에러메세지 객체를 반환하는 함수
+	const check = val => {
+		let errs = {};
+		if(val.userid.length < 5) {
+			errs.userid = '아이디를 5글자 이상 입력하세요';
+		}
+		return errs;
+	}
+
 	// 전송이벤트 발생시 호출될 함수
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log('전송이벤트발생')
+
+		// 전송이벤트 발생시 현재 val state값의 userid값을 check함수가 검사해서 인증을 통과하면 빈 객체 반환, 인증 실패 시 userid키값으로 에러메세지 담아서 에러객체반환
+		// 반환된 에러객체를 err state에 저장햐
+		setErr(check(val));
 	}
 
 	useEffect(() => {
