@@ -2,51 +2,46 @@ import React, { useRef, useEffect, useState } from 'react'
 
 
 function Location() {
-	const frame = useRef(null);
-	const container = useRef(null);
 	// 전역등록되어 있는 kakao객체를 읽지 못하는 문제 해결
 	// 비구조할당으로 kakao객체값을 변수로 따로 뽑아냄
 	const {kakao} = window;
+	const path = process.env.PUBLIC_URL;
+	//각 지점별 정보값
+	const info = [
+		{
+			title: '송내역',
+			latlag: new kakao.maps.LatLng(37.487626, 126.753045),
+			imgSrc: path + '/img/marker1.png',
+			imgSize: new kakao.maps.Size(232, 99),
+			imgPos: { offset: new kakao.maps.Point(116, 99) },
+		},
+		{
+			title: '강남 포스코 사거리',
+			latlag: new kakao.maps.LatLng(37.506354, 127.055006),
+			imgSrc: path + '/img/marker2.png',
+			imgSize: new kakao.maps.Size(232, 99),
+			imgPos: { offset: new kakao.maps.Point(116, 99) },
+		},
+		{
+			title: '청담역',
+			latlag: new kakao.maps.LatLng(37.51912, 127.051937),
+			imgSrc: path + '/img/marker3.png',
+			imgSize: new kakao.maps.Size(232, 99),
+			imgPos: { offset: new kakao.maps.Point(116, 99) },
+		},
+	];
+
+	//useRef로 가상DOM참조
+	const frame = useRef(null);
+	const container = useRef(null);
+
+	//렌더링에 관여하는 주요 state관리
 	const [map, setMap] = useState(null);
 	const [traffic, setTraffic] = useState(false);
-	const path = process.env.PUBLIC_URL;
-		
-	useEffect(() => {
-		frame.current.classList.add('on');
-		
-		// 지도 출력을 위한 옵션값 지정
-		const options = {
-			center: new kakao.maps.LatLng(37.51267850297629, 127.0606036644381),
-			level: 3
-		};
+	const [index, setIndex] = useState(0);
+	const [mapInfo] = useState(info);
 
-		// kakao api로 부터 인스턴스 복사 (지도가 출력될 프레임, 옵션)
-		const mapInfo = new kakao.maps.Map(container.current, options);
-		// 지역변수 map의 인스턴스 정보값을 setMap을 통해서 state map으로 옮겨담음.
-		setMap(mapInfo);
-
-		// 마커생성
-		const markerPosition = new kakao.maps.LatLng(37.51267850297629, 127.0606036644381);
-
-		// 마커이미지 정보 추가
-		const imageSrc = `${path}/img/marker1.png`, 
-			imageSize = new kakao.maps.Size(232, 99), // 마커이미지의 크기입니다
-			imageOption = {offset: new kakao.maps.Point(110, 90)};
-
-		// 마커 인스턴스 생성
-		const markerImage = new kakao.maps.MarkerImage(
-			imageSrc,
-			imageSize,
-			imageOption
-		)
-		const marker = new kakao.maps.Marker({
-			position: markerPosition,
-			image: markerImage,
-		});
-
-		marker.setMap(mapInfo);
-	}, []);
-
+	// 트래픽활성 함수
 	const handTraffic = () => {
 		// 처음 컴포넌트가 생성시에는 아직 map state값이 비어있는 상태이기 때문에 map값을 읽을수없어서 오류가 뜸
 		// 그래서 추후 traffic state값이 변경이 되고 map값이 생성되면 동작이 되도록
@@ -56,17 +51,51 @@ function Location() {
 					: map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC)
 		}
 	}
+	
+	// 처음 컴포넌트 생성시 한번만 실행
+	useEffect(() => {
+		frame.current.classList.add('on');
+	}, [])
 
-	const setCenter = (lat, lng) => {
-		const moveLatLon = new kakao.maps.LatLng(lat, lng);
-		map.setCenter(moveLatLon);
-	}
+	// index state가 변경될때마다 지도 다시그리고 마커 다시 출력
+	useEffect(() => {
+		// 맵 화면 출력
+		const option = {
+			center: mapInfo[index].latlag,
+			level: 3
+		};
+		// 맵 인스턴스 생성해서 화면에 지도 출력
+		const mapInstance = new kakao.maps.Map(container.current, option);
+		
+		//마커 출력
+		new kakao.maps.Marker({
+			map: mapInstance,
+			position: mapInfo[index].latlag,
+			title: mapInfo[index].title,
+			image: new kakao.maps.MarkerImage(
+				mapInfo[index].imgSrc,
+				mapInfo[index].imgSize,
+				mapInfo[index].imgPos
+			),
+		});
 
+		// 지도 위치 가운데 이동 함수
+		const mapInit = () => {
+			mapInstance.setCenter(mapInfo[index].latlag);
+		};
+
+		window.addEventListener('resize', mapInit);
+
+		setMap(mapInstance);
+	}, [index]);
+
+	// traffic state가 변경될따마다 실행 트래픽 오버레이 레이어 표시
 	useEffect(() => {
 		// console.log(traffic)
 		handTraffic();
 	}, [traffic])
 
+// state값 변경에 따라 렌더링될 가상 DOM
   return (
 	  <section className='location' ref={frame}>
 		  <div className='inner'>
@@ -76,9 +105,12 @@ function Location() {
 
 			<button onClick={() => setTraffic(!traffic)}> {traffic ? 'traffic ON' : 'traffic OFF'}</button>
 
-			<ul className='branch'>
-				<li onClick={() => setCenter(37.51270099322895, 127.06067154788254)}>본점</li>
-				<li onClick={() => setCenter(37.487626, 126.753045)}>지점1</li>
+			<ul>
+				{mapInfo.map((data,idx) => {
+					return (
+						<li key={idx} onClick={() => setIndex(idx)}>{data.title}</li>
+					)
+				})}
 			</ul>
 		  </div>
 	  </section>
