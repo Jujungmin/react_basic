@@ -89,6 +89,15 @@ function Location() {
 			console.log('mapInit')
 			mapInstance.setCenter(mapInfo[index].latlag);
 		};
+
+		// 지도컨트롤타입 인스턴스 생성
+		const mapTypeControl = new kakao.maps.MapTypeControl();
+		mapInstance.addControl(mapTypeControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
+
+		// zoom 컨트롤러 인스턴스 생성
+		const zoomControl = new kakao.maps.ZoomControl();
+		mapInstance.addControl(zoomControl, kakao.maps.ControlPosition.LEFT);
+
 		// 브라우저가 리사이즈 할때마다 mapInit함수를 계속 호출해서 화면 중앙값으로 갱신
 		window.addEventListener('resize', mapInit);
 		
