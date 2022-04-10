@@ -26,6 +26,9 @@ function Header(props) {
 				<li>
 					<NavLink activeStyle={active} to='/location'>Location</NavLink>
 				</li>
+				<li>
+					<NavLink activeStyle={active} to='/Join'>Join</NavLink>
+				</li>
 			</ul>
 
 			<p className='menu'>
