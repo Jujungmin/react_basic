@@ -59,6 +59,10 @@ function Location() {
 
 	// index state가 변경될때마다 지도 다시그리고 마커 다시 출력
 	useEffect(() => {
+		// 문제점 : index state가 변경될따마다 #map안쪽에 계속해서 지도 인스턴스를 생성하면서 태그가 중첩되는 문제
+		// 해결방법 : 기존의 #map안쪽의 DOM을 제거해서 초기화하고 다시 지도 생성
+		container.current.innerHTML = '';
+		
 		// 맵 화면 출력
 		const option = {
 			center: mapInfo[index].latlag,
@@ -81,12 +85,19 @@ function Location() {
 
 		// 지도 위치 가운데 이동 함수
 		const mapInit = () => {
+			// 문제점 : 다른 컴포넌트에서도 이벤트 발생
+			console.log('mapInit')
 			mapInstance.setCenter(mapInfo[index].latlag);
 		};
-
+		// 브라우저가 리사이즈 할때마다 mapInit함수를 계속 호출해서 화면 중앙값으로 갱신
 		window.addEventListener('resize', mapInit);
-
+		
 		setMap(mapInstance);
+		
+		// 해당 컴포넌트가 사라질때 window객체에 등록했던 mapInit핸들러 함수를 다시 제거해서 불필요한 메모리 누수 방지
+		// 해결 : useEffect cleanup함수사용해서 다른 컴포넌트에서 이벤트 발생시키지 않음
+		return () => window.removeEventListener('resize', mapInit);
+
 	}, [index]);
 
 	// traffic state가 변경될따마다 실행 트래픽 오버레이 레이어 표시
