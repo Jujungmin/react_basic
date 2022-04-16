@@ -1,4 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react';
+import Layout from '../common/Layout';
 
 
 function Location() {
@@ -32,7 +33,6 @@ function Location() {
 	];
 
 	//useRef로 가상DOM참조
-	const frame = useRef(null);
 	const container = useRef(null);
 
 	//렌더링에 관여하는 주요 state관리
@@ -52,11 +52,6 @@ function Location() {
 		}
 	}
 	
-	// 처음 컴포넌트 생성시 한번만 실행
-	useEffect(() => {
-		frame.current.classList.add('on');
-	}, [])
-
 	// index state가 변경될때마다 지도 다시그리고 마커 다시 출력
 	useEffect(() => {
 		// 문제점 : index state가 변경될따마다 #map안쪽에 계속해서 지도 인스턴스를 생성하면서 태그가 중첩되는 문제
@@ -117,23 +112,18 @@ function Location() {
 
 // state값 변경에 따라 렌더링될 가상 DOM
   return (
-	  <section className='location' ref={frame}>
-		  <div className='inner'>
-			  <h1>Location</h1>
+	  <Layout name={'Location'}>
+		<div id='map' ref={container}></div>
+		<button onClick={() => setTraffic(!traffic)}> {traffic ? 'traffic ON' : 'traffic OFF'}</button>
 
-			  <div id='map' ref={container}></div>
-
-			<button onClick={() => setTraffic(!traffic)}> {traffic ? 'traffic ON' : 'traffic OFF'}</button>
-
-			<ul>
-				{mapInfo.map((data,idx) => {
-					return (
-						<li key={idx} onClick={() => setIndex(idx)}>{data.title}</li>
-					)
-				})}
-			</ul>
-		  </div>
-	  </section>
+		<ul>
+			{mapInfo.map((data,idx) => {
+				return (
+					<li key={idx} onClick={() => setIndex(idx)}>{data.title}</li>
+				)
+			})}
+		</ul>
+	</Layout>
   )
 }
 
