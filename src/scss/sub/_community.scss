@@ -1,0 +1,11 @@
+.Community {
+	.inputBox {
+		border:1px solid #aaa; padding: 50px; margin-bottom: 100px;
+	}
+	.showBox {
+		border: 1px solid #aaa; padding: 50px;
+		> article {
+			border: 1px solid #ccc; padding: 30px; margin-bottom: 20px;
+		}
+	}
+}
