@@ -1,15 +1,15 @@
 import Layout from '../common/Layout';
-import { useEffect, useState  } from 'react';
+import { useEffect, useState } from 'react';
 
-function Join() {
+function Join({history}) {
 	const initVal = {
 		userid: '',
 		pwd1: '',
 		pwd2: '',
 		comments: '',
 		email: '',
-		gender: null, // boolean이므로 null값준다.
-		interests: null,
+		gender: false,
+		interests: false,
 		edu: null,
 	}
 	const [val,setVal] = useState(initVal);
@@ -101,7 +101,7 @@ function Join() {
 		setIsSubmit(true);
 	}
 	
-	// 미션1 - 인증이 통과되면 화면에 변화없음, 인증실패 시 인풋옆에 에러메세지 출력
+	// 에러메세지 출력
 	useEffect(() => {
 		// console.log(err);
 		// err 객체의 key값을 구해서 갯수값 저장
@@ -111,6 +111,7 @@ function Join() {
 		if(len === 0 && isSubmit) {
 			// 폼인증 완료처리
 			setSuccess(true);
+			history.push('/');
 		} else {
 			setSuccess(false);
 		}
