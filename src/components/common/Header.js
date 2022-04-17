@@ -18,6 +18,9 @@ function Header(props) {
 					<NavLink activeStyle={active} to='/Department'>Department</NavLink>
 				</li>
 				<li>
+					<NavLink activeStyle={active} to='/Community'>Community</NavLink>
+				</li>
+				<li>
 					<NavLink activeStyle={active} to='/gallery'>Gallery</NavLink>
 				</li>
 				<li>

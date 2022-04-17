@@ -8,6 +8,7 @@ import Gallery from './components/sub/Gallery';
 import Department from './components/sub/Department';
 import Location from './components/sub/Location';
 import Join from './components/sub/Join';
+import Community from './components/sub/Community';
 
 
 import './scss/style.scss';
@@ -29,6 +30,7 @@ function App() {
 		</Switch>
 
 		<Route path='/department' component={Department}></Route>
+		<Route path='/community' component={Community}></Route>
 		<Route path='/youtube' component={Youtube}></Route>
 		<Route path='/gallery' component={Gallery}></Route>
 		<Route path='/Location' component={Location}></Route>

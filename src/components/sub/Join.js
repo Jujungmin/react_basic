@@ -111,6 +111,7 @@ function Join({history}) {
 		if(len === 0 && isSubmit) {
 			// 폼인증 완료처리
 			setSuccess(true);
+			// 인증이 완료되면 메인 컴포넌트로 라우터 이동
 			history.push('/');
 		} else {
 			setSuccess(false);
