@@ -1,9 +1,7 @@
 import Layout from '../common/Layout';
 import { useEffect, useState  } from 'react';
-import { faCheckToSlot } from '@fortawesome/free-solid-svg-icons';
 
 function Join() {
-
 	const initVal = {
 		userid: '',
 		pwd1: '',
@@ -12,9 +10,13 @@ function Join() {
 		email: '',
 		gender: null, // boolean이므로 null값준다.
 		interests: null,
+		edu: null,
 	}
 	const [val,setVal] = useState(initVal);
 	const [err,setErr] = useState({});
+	const [success, setSuccess] = useState(false);
+	// 전송버튼 클릭 시 유뮤의 결과값을 담을 state생성
+	const [isSubmit, setIsSubmit] = useState(false);
 	
 	// 인수로 현재 val의 정보값을 전달
 	const check = (arg) => {
@@ -45,6 +47,9 @@ function Join() {
 		if(!arg.interests) {
 			errs.interests = '관심사를 하나이상 출력하세요';
 		}
+		if(!arg.edu) {
+			errs.edu = '최종학력을 선택하세요';
+		}
 		return errs;
 	}
 	
@@ -63,7 +68,7 @@ function Join() {
 	}
 
 	const handleRadio = (e) => {
-		const name = e.target;
+		const {name} = e.target;
 		const isCheck = e.target.checked;
 		setVal({...val, [name]: isCheck});
 	}
@@ -80,21 +85,43 @@ function Join() {
 		setVal({...val, [name]: isCheck});
 	}
 
+	const handleSelect = (e) => {
+		// 선택한 select요소의 name값을 저장
+		const {name} = e.target;
+		// 선택한 요소의 자식인 option들 중에서 선택한 순번의 option요소 value값 저장
+		const isSelected = e.target.options[e.target.selectedIndex].value;
+		// 위의 name값에 value값을 담아서 val스테이트를 저장
+		setVal({...val, [name]: isSelected});
+	}
+
 	const handleSubmit = e => {
 		e.preventDefault();
 		// 전송 이벤트 발생 시 check함수로 반환된 에러객체가 err 스테이트에 저장
 		setErr(check(val));
+		setIsSubmit(true);
 	}
 	
 	// 미션1 - 인증이 통과되면 화면에 변화없음, 인증실패 시 인풋옆에 에러메세지 출력
 	useEffect(() => {
-		console.log(err);
-	},[err])
+		// console.log(err);
+		// err 객체의 key값을 구해서 갯수값 저장
+		const len = Object.keys(err).length;
+
+		// 에러객체내용이 없고 전송버튼이 클릭되면
+		if(len === 0 && isSubmit) {
+			// 폼인증 완료처리
+			setSuccess(true);
+		} else {
+			setSuccess(false);
+		}
+	},[err]);
 
 
   return (
 	  // 공통의 UI인 Layout컴포넌트로 Join전용 컨텐츠를 wrapping
 	<Layout name={'Join'}>
+		{/* success값이 true일때 성공 메세지 출력 */}
+		{success ? <h2>회원가입을 축하합니다</h2> : null}
 		<article>
 			<form onSubmit={handleSubmit}>
 				<fieldset>
@@ -183,6 +210,22 @@ function Join() {
 									<label htmlFor='game'>Game</label>
 									<input type='checkbox' name='interests' id='game' value='game' onChange={handleCheck} />
 									<span className='err'>{err.interests}</span>
+								</td>
+							</tr>
+							{/* 학력 */}
+							<tr>
+								<th scope='row'>
+									<label htmlFor='edu'>EDUCATION</label>
+								</th>
+								<td>
+									<select name='edu' id='edu' onChange={handleSelect}>
+										<option value=''>학력을 선택하세요.</option>
+										<option value='elementary-school'>초등학교 졸업</option>
+										<option value='middle-school'>중학교 졸업</option>
+										<option value='high-scroll'>고등학교 졸업</option>
+										<option value='college'>대학교 졸업</option>
+									</select>
+									<span className='err'>{err.edu}</span>
 								</td>
 							</tr>
 							{/* 코멘트 */}
