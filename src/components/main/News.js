@@ -25,7 +25,7 @@ function News() {
 
 
   return (
-	  <section id='news'>
+	  <section id='news' className='myScroll'>
 		  <h1>Recent Posts</h1>
 		  {posts.map((post, idx) => {
 			  // 순서3 - 최신글 3개까지만 출력
