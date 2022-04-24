@@ -1,5 +1,5 @@
-import {useState, useEffect, useRef } from 'react';
 import Layout from '../common/Layout';
+import {useState, useEffect, useRef } from 'react';
 
 /*
 	*crud
@@ -16,31 +16,18 @@ function Community() {
 	const editInput = useRef(null);
 	const editTextarea = useRef(null);
 
-	const getLocalData = () => {
-		const dummyPosts = [
-			{title: 'Hello6', content: 'Here comes description in detail.'},
-			{title: 'Hello5', content: 'Here comes description in detail.'},
-			{title: 'Hello4', content: 'Here comes description in detail.'},
-			{title: 'Hello3', content: 'Here comes description in detail.'},
-			{title: 'Hello2', content: 'Here comes description in detail.'},
-			{title: 'Hello1', content: 'Here comes description in detail.'},
-		];
-		const data = localStorage.getItem('posts');
-	
-		if(data) return JSON.parse(data);
-		else return dummyPosts;
-	}
+	// 순서4 - 메인컴포넌트에서 로컬 저장된 데이터를 다시 state에 옮겨담음
+	let data = localStorage.getItem('posts');
+	data = JSON.parse(data);
 
-	const [posts, setPosts] = useState(getLocalData);
-	
-	// 중복 수정을 막을 state추가
+	const [posts, setPosts] = useState(data);
 	const [allowed, setAllowed] = useState(true);
 
 	const resetPosts = () => {
 		input.current.value = '';
 		textarea.current.value = '';
 	}
-	const createPost = () => {
+	const createPosts = () => {
 		const inputVal = input.current.value.trim();
 		const textareaVal = textarea.current.value.trim();
 
@@ -117,7 +104,7 @@ function Community() {
 			<textarea cols='30' rows='10' placeholder='본문을 입력하세요' ref={textarea}></textarea>
 			<br/>
 			<button onClick={resetPosts}>cancel</button>
-			<button onClick={createPost}>create</button>
+			<button onClick={createPosts}>create</button>
 		</div>
 
 		<div className='showBox'>
@@ -140,7 +127,7 @@ function Community() {
 						) : (
 							<>
 								<h2>{post.title}</h2>
-								<h2>{post.content}</h2>
+								<p>{post.content}</p>
 
 								<button onClick={()=> {
 									// allowed값이 true일때에만 수정모드 변경가능
@@ -156,7 +143,7 @@ function Community() {
 			})}
 		</div>
 	</Layout>
-  )
+  );
 }
 
-export default Community
+export default Community;
