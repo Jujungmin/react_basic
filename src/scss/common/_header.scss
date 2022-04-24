@@ -2,16 +2,16 @@ header {
 	width: 100%; height: 80px; background: #222; padding: 0px 5vw; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
 
 	&.main {
-		background: #fff; border-bottom: 1px solid #333;
+		position:absolute; top:0px; left:0px; border-bottom: 1px solid #bbb; z-index: 3;
 		h1 a {
-			color: #ccc;
+			color: #fff;
 		}
 		.gnb {
 			li a {
-				color: #555;
+				color: #fff;
 			}
 			.menu .fa-bars {
-				color: #555;
+				color: #fff;
 			}
 		}
 	}

@@ -7,8 +7,8 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 function Header(props) {
 	// console.log(props.type);
-
-	const active = {color: 'hotpink'};
+	let active = null;
+	props.tyle === null ? active = {color: '#fff'} : active = {color: 'hotpink'};
 	return (
 		<header className={props.type}>
 			<h1><NavLink activeStyle={active} exact to='/'>LOGO</NavLink></h1>
