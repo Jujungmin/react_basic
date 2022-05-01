@@ -1,44 +1,46 @@
-import axios from 'axios';
-import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Layout from '../common/Layout';
+// action 객체 생성함수 import
+import { setMembers } from '../../redux/actions';
 
 function Department() {
-	// const [members, setMembers] = useState([]);
 	const path = process.env.PUBLIC_URL;
+	// useDispatch로부터 데이터 전달함수 활성화
+	const dispath = useDispatch();
 	const members = useSelector((store) => 
 		store.memberReducer.members
 	)
-	console.log(members);
 
-	/*
-	const url = `${path}/DB/department.json`;
-
-	useEffect(() => {	
-		axios
-			.get(url)
-			.then((json) => {
-				console.log(json.data.data);
-				setMembers(json.data.data);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	}, []);
-	*/
+	// 변경할 새로운 데이터
+	const newMembers = [
+		{
+			"name" : "Tom",
+			"position" : "CEO",
+			"pic" : "member4.jpg"
+		},
+		{
+			"name" : "Julia",
+			"position" : "Vice President",
+			"pic" : "member2.jpg"
+		},
+		{
+			"name" : "Emma",
+			"position" : "Back-end Developer",
+			"pic" : "member3.jpg"
+		},
+		{
+			"name" : "David",
+			"position" : "Designer",
+			"pic" : "member4.jpg"
+		}
+	]
 
 	return (
 		<Layout name={'Department'}>
-			{/* <button
-				onClick={() => {
-					let newMembers = [...members];
-					newMembers[0].name = 'Michael';
-					setMembers(newMembers);
-					console.log(members);
-				}}>
-				멤버정보 변경
-			</button> */}
-			
+			<button onClick={() => {
+				// action생성함수인 setMembers의 인수로 변경할 데이터 입력
+				dispath(setMembers(newMembers));
+			}}>멤버정보 변경</button>
 			<ul>
 				{members.map((data, idx) => {
 					return (

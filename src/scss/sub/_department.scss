@@ -1,11 +1,12 @@
-.department {
+.Department {
 	padding: 50px;
 
 	ul {
+		width: 100%; display: flex; justify-content: space-between; align-items: flex-start;
 		li {
-			margin-bottom: 100px;
+			width: 22%; margin-bottom: 100px; border: 1px solid #bbb; padding: 10px;
 			img {
-				width: 300px;
+				width: 100%;
 			}
 		}
 	}

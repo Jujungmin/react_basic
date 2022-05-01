@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 // combineReducers :: 여러개의 reducers가 있을 때 하나로 묶어줌.
 
+// 변경할 새로운 데이터
 const initMember =  {
 	members: [
 			{
