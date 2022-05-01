@@ -1,12 +1,20 @@
 figure {
 	width: 100%;
 	height: 100vh;
-	background: #999;
+	background: #333;
 	position: relative;
 	overflow: hidden;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 5vw;
-	color: #fff;
+	padding: 200px 0px 100px;
+
+	.swiper {
+		width: 100%; height: 100%;
+		.swiper-slide {
+			background: aqua;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 10vw;
+			color: #fff;
+		}
+	}
 }
