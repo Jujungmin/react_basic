@@ -1,25 +1,27 @@
 .common {
-    opacity: 0;
-    transform: translateY(200px);
-    transition: 1s;
-    &.on {
-        opacity: 1;
-        transform: translateY(0px);
-    }
-    > .inner {
-        width: 1180px;
-        margin: 100px auto;
-        position: relative;
-        padding: 0 40px;
-        
-        h1 {
-            margin-bottom: 50px;
-        }
-    }
+	opacity: 0;
+	transform: translateY(200px);
+	transition: 1s;
+
+	&.on {
+		opacity: 1;
+		transform: translateY(0px);
+	}
+
+	> .inner {
+		width: 1180px;
+		margin: 100px auto;
+		position: relative;
+		padding: 0px 40px;
+
+		h1 {
+			margin-bottom: 50px;
+		}
+	}
 }
 
-@media screen and (max-width:1179px) {
-    section > .inner {
-        width: 100%;
-    }
+@media screen and (max-width: 1179px) {
+	section > .inner {
+		width: 100%;
+	}
 }

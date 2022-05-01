@@ -1,21 +1,21 @@
-import { useEffect, useRef } from 'react'
-
+import { useEffect, useRef } from 'react';
 
 function Layout(props) {
 	const frame = useRef(null);
 
 	useEffect(() => {
 		frame.current.classList.add('on');
-	}, [])
+	}, []);
+
 	return (
 		<section ref={frame} className={`common ${props.name}`}>
-			<div className="inner">
+			<div className='inner'>
 				<h1>{props.name}</h1>
-				{/* 해당 컴포넌트의 자식요소를 호출 */}
+				{/* 해당 컴포넌트의 자식 요소를 호출 */}
 				{props.children}
 			</div>
 		</section>
-	)
+	);
 }
 
 export default Layout;

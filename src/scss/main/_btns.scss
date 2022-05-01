@@ -1,7 +1,19 @@
 .btns {
-	position: fixed; top: 50%; right: 50px; transform: translateY(-50%); z-index: 5;
+	position: fixed;
+	top: 50%;
+	right: 50px;
+	transform: translateY(-50%);
+	z-index: 5;
+
 	li {
-		width: 10px; height: 10px; border-radius: 5px; background: #fff; cursor: pointer; margin: 20px; transition: .5s;
+		width: 10px;
+		height: 10px;
+		border-radius: 5px;
+		background: #fff;
+		cursor: pointer;
+		margin: 20px;
+		transition: 0.5s;
+
 		&.on {
 			height: 100px;
 			background: #111;

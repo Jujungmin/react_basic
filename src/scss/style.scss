@@ -2,13 +2,16 @@
 @import 'common/header';
 @import 'common/footer';
 @import 'common/layout';
+@import 'common/popup';
 
+//main
 @import 'main/visual';
 @import 'main/news';
 @import 'main/pics';
 @import 'main/vids';
 @import 'main/btns';
 
+//sub
 @import 'sub/youtube';
 @import 'sub/gallery';
 @import 'sub/department';

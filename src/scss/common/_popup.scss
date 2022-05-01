@@ -1,0 +1,25 @@
+.popup {
+	padding: 5vw;
+
+	.con {
+		width: 100%;
+		height: 100%;
+		position: relative;
+
+		iframe,
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		> span {
+			position: absolute;
+			top: -50px;
+			right: 0px;
+			font: bold 14px/1 'arial';
+			color: #fff;
+			cursor: pointer;
+		}
+	}
+}
