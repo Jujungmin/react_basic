@@ -11,7 +11,9 @@ function Visual() {
 			<Swiper
 				loop={true}
 				slidesPerView={3}
-				spaceBetween={30}
+				spaceBetween={50}
+				grabCursor={true}
+				centeredSlides={true}
 				pagination={{ clickable: true }}
 				navigation={true}
 				modules={[Pagination, Navigation]}
