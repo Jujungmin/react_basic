@@ -6,7 +6,6 @@ function Footer() {
 	const members = useSelector((store) => 
 		store.memberReducer.members
 	)
-	console.log(members);
 
 	return <footer>
 		2022 DCODELAB &copy; ALL RIGHTS RESERVED.

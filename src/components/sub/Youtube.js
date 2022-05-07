@@ -1,29 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
 import Layout from '../common/Layout';
 import Popup from '../common/Popup';
 
 function Youtube() {
+	// state에 youtubeReducer데이터를 가져옴(빈배열)
+	const vidData = useSelector((store) => store.youtubeReducer.youtube);
 	const pop = useRef(null);
-	const [items, setItems] = useState([]);
+
 	const [index, setIndex] = useState(0);
 	const [loading, setLoading] = useState(false);
-
-	const api_key = 'AIzaSyC1ZoNu5yeRlCzN99-WFMmpbx2XZKXpr4Y';
-	const play_list = 'PL0_TVLt64K1Wc00HL3Xs4KPSmOEKNeqeZ';
-	const url = `https://www.googleapis.com/youtube/v3/playlistItems?key=${api_key}&playlistId=${play_list}&maxResults=3&part=snippet`
-
-	useEffect(() => {
-		axios.get(url).then((json) => {
-			setItems(json.data.items);
-			setLoading(true);
-		});
-	}, []);
 
 	return (
 		<>
 			<Layout name={'Youtube'}>
-				{items.map((item, idx) => {
+				{vidData.map((item, idx) => {
 					let desc = item.snippet.description;
 					let desc_len = desc.length;
 					let date = item.snippet.publishedAt;
@@ -49,11 +40,11 @@ function Youtube() {
 			</Layout>
 
 			<Popup ref={pop}>
-				{loading && (
+				{vidData.length !== 0 && (
 					<iframe
 						src={
 							'https://www.youtube.com/embed/' +
-							items[index].snippet.resourceId.videoId
+							vidData[index].snippet.resourceId.videoId
 						}
 						frameBorder='0'></iframe>
 				)}
