@@ -1,7 +1,7 @@
 import { Route, Switch } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setYoutube, setMembers } from './redux/actions';
+import { setYoutube, setMembers, setFlicker } from './redux/actions';
 import axios from 'axios';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
@@ -32,6 +32,17 @@ function App() {
 		});
 	};
 
+	const fetchFlickr = async () => {
+		const api_key = '8fba436cfe2e8ae7f3a3aafcf18574c6';
+		const method = 'flickr.interestingness.getList';
+		const per_page = 50;
+		const url = `https://www.flickr.com/services/rest/?method=${method}&api_key=${api_key}&format=json&nojsoncallback=1&per_page=${per_page}`;
+
+		await axios.get(url).then((json) => {
+			dispatch(setFlicker(json.data.photos.photo));
+		});
+	}
+
 	const fetchMembers = async () => {
 		const url = path + '/DB/department.json';
 		await axios.get(url).then((json) => {
@@ -42,6 +53,7 @@ function App() {
 	useEffect(() => {
 		fetchYoutube();
 		fetchMembers();
+		fetchFlickr();
 	}, []);
 
 	return (
