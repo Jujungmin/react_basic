@@ -1,12 +1,22 @@
-import React, { useRef } from 'react';
+import { useSelector } from 'react-redux';
 
 function Pics() {
-	const box = useRef(null);
+	const flickr = useSelector((store) => store.flickrReducer.flickr);
 	return (
 		<section id='pics' className='myScroll'>
 			<h1>Recent Gallery</h1>
 
-			<div id='box' ref={box}></div>
+			{
+				flickr.map((pic, idx) => {
+					if(idx < 5) {
+						return (
+							<li key={idx}>
+								<img src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_s.jpg`} />
+							</li>
+						)
+					}
+				})
+			}
 		</section>
 	);
 }
