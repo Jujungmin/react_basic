@@ -30,6 +30,10 @@ function Flickr() {
 		}
 
 		await axios.get(url).then((json) => {
+			if(json.data.photos.photo.length === 0) {
+				alert('해당 검색어의 이미지가 없습니다');
+				return;
+			}
 			setItems(json.data.photos.photo);
 		});
 
@@ -59,7 +63,7 @@ function Flickr() {
 			return;
 		}
 		input.current.value = '';
-		
+
 		if(enableClick) {
 			setEnableClick(false);
 			setLoading(true);
@@ -85,7 +89,10 @@ function Flickr() {
 			<button onClick={showInterest}>interest</button>
 
 			<div className='searchBox'>
-				<input type='text' ref={input} />
+				<input type='text' ref={input} onKeyUp={e => {
+					// enter누르면 search버튼 누름
+					if(e.key === 'Enter') showSearch();
+				}} />
 				<button onClick={showSearch}>search</button>
 			</div>
 
@@ -103,6 +110,19 @@ function Flickr() {
 										<img src={`https://live.staticflickr.com/${item.server}/${item.id}_${item.secret}_m.jpg`} />
 									</div>
 									<h2>{item.title}</h2>
+
+									<div className='profile'>
+										<img src={`http://farm${item.farm}.staticflickr.com/${item.server}/buddyicons/${item.owner}.jpg`} 
+										onError={(e) => {
+											// 만약 해당 이미지요소의 프로필이미지가 없으면 error이벤트가 발생하여 src값을 setAttirbute로 대체이미지를 대신 출력
+											e.target.setAttribute(
+												'src',
+												'https://www.flickr.com/images/buddyicon.gif'
+											);
+										}}
+										/>
+										<span>{item.owner}</span>
+									</div>
 								</div>
 							</article>
 						)
@@ -114,3 +134,9 @@ function Flickr() {
 	}
 
 export default Flickr;
+
+/*
+keyDown : 키를 누르는 시점
+keyUp : 키를 눌렀다 떼는 시점
+keyPress : 키를 눌렀다 떼는 시점(한영변환 같은 특수키 적용 안됨)
+*/

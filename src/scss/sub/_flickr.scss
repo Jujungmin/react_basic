@@ -34,6 +34,22 @@
 				h2 {
 					font: normal 14px/1.2 'arial'; color: #777; margin-bottom: 20px;
 				}
+
+				.profile {
+					display: flex; justify-content: flex-start; align-items: center;
+
+					img {
+						width: 40px; height: 40px; border-radius: 20px; margin-right: 10px;
+					}
+
+					span {
+						font: 12px/1 'arial'; color: orange; cursor: pointer; transition: .5s;
+						
+						&:hover {
+							color: aqua;
+						}
+					}
+				}
 			}
 		}
 	}
