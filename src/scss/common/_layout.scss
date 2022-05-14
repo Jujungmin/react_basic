@@ -10,9 +10,10 @@
 
 	> .inner {
 		width: 1180px;
-		margin: 100px auto;
+		min-height: 1000px;
+		margin: 0px auto;
 		position: relative;
-		padding: 0px 40px;
+		padding: 100px 40px;
 
 		h1 {
 			margin-bottom: 50px;

@@ -1,3 +1,37 @@
 .Flickr {
+	.frame {
+		transform: translateY(200px);
+		opacity: 0;
+		transition: 1s;
+
+		&.on {
+			transform: translateY(0px);
+			opacity: 1;
+		}
 	
+		&::after {
+			content: '';
+			display: block;
+			clear: both;
+		}
+	
+		article {
+			width: 25%; float: left; padding: 10px;
+	
+			.inner {
+				width: 100%; background: #fff; box-shadow: 5px 5px 10px rgba(0,0,0,0.1); padding: 10px;
+	
+				.pic {
+					width: 100%; margin-bottom: 10px; cursor: pointer;
+	
+					img {
+						width: 100%;
+					}
+				}
+				h2 {
+					font: normal 14px/1.2 'arial'; color: #777; margin-bottom: 20px;
+				}
+			}
+		}
+	}
 }
