@@ -7,9 +7,7 @@ function Youtube() {
 	// state에 youtubeReducer데이터를 가져옴(빈배열)
 	const vidData = useSelector((store) => store.youtubeReducer.youtube);
 	const pop = useRef(null);
-
 	const [index, setIndex] = useState(0);
-	const [loading, setLoading] = useState(false);
 
 	return (
 		<>

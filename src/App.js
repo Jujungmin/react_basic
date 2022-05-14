@@ -8,6 +8,7 @@ import Footer from './components/common/Footer';
 import Main from './components/main/Main';
 import Youtube from './components/sub/Youtube';
 import Gallery from './components/sub/Gallery';
+import Flickr from './components/sub/Flickr';
 import Department from './components/sub/Department';
 import Location from './components/sub/Location';
 import Join from './components/sub/Join';
@@ -60,16 +61,15 @@ function App() {
 		<>
 			<Switch>
 				<Route exact path='/' component={Main}></Route>
-
-				<Route path='/'>
-					<Header type={'sub'} />
-				</Route>
+				{/* componet대신 render ::  */}
+				<Route path='/' render={() => <Header type={'sub'} />}></Route>
 			</Switch>
 
 			<Route path='/department' component={Department}></Route>
 			<Route path='/community' component={Community}></Route>
 			<Route path='/youtube' component={Youtube}></Route>
 			<Route path='/gallery' component={Gallery}></Route>
+			<Route path='/flickr' component={Flickr}></Route>
 			<Route path='/location' component={Location}></Route>
 			<Route path='/join' component={Join}></Route>
 
