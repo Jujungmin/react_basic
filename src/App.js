@@ -61,7 +61,7 @@ function App() {
 		<>
 			<Switch>
 				<Route exact path='/' component={Main}></Route>
-				{/* componet대신 render ::  */}
+				{/* componet대신 render :: 기존라우터 인라인으로 수정 */}
 				<Route path='/' render={() => <Header type={'sub'} />}></Route>
 			</Switch>
 
