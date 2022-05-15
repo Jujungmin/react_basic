@@ -12,9 +12,9 @@ export const setYoutube = (data) => {
 	}
 }
 
-export const setFlicker = (data) => {
+export const setGallery = (data) => {
 	return {
-		type: 'SET_FLICKR',
+		type: 'SET_GALLERY',
 		payload: data,
 	}
 }

@@ -20,10 +20,10 @@ const youtubeReducer = (state= {youtube: []}, action) => {
 	}
 }
 
-const flickrReducer = (state= {flickr: []}, action) => {
+const galleryReducer = (state= {gallery: []}, action) => {
 	switch(action.type) {
-		case 'SET_FLICKR':
-			return { ...state, flickr: action.payload};
+		case 'SET_GALLERY':
+			return { ...state, gallery: action.payload};
 
 		default:
 			return state;
@@ -33,7 +33,7 @@ const flickrReducer = (state= {flickr: []}, action) => {
 const reducers = combineReducers({
 	memberReducer,
 	youtubeReducer,
-	flickrReducer,
+	galleryReducer,
 });
 
 export default reducers;

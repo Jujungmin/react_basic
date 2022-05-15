@@ -6,13 +6,13 @@ import Popup from '../common/Popup';
 function Gallery() {
 	const pop = useRef(null);
 	const [index, setIndex] = useState(0);
-	const flickr = useSelector((store) => store.flickrReducer.flickr);
+	const gallery = useSelector((store) => store.galleryReducer.gallery);
 
 	return (
 		<>
 			<Layout name={'Gallery'}>
 				<ul>
-					{flickr.map((item, idx) => {
+					{gallery.map((item, idx) => {
 						return (
 							<li
 								key={idx}
@@ -31,14 +31,14 @@ function Gallery() {
 			</Layout>
 
 			<Popup ref={pop}>
-				{flickr.length !== 0 && (
+				{gallery.length !== 0 && (
 					<>
 						<div className='pic'>
 							<img
-								src={`https://live.staticflickr.com/${flickr[index].server}/${flickr[index].id}_${flickr[index].secret}_b.jpg`}
+								src={`https://live.staticflickr.com/${gallery[index].server}/${gallery[index].id}_${gallery[index].secret}_b.jpg`}
 							/>
 						</div>
-						<p>{flickr[index].title}</p>
+						<p>{gallery[index].title}</p>
 					</>
 				)}
 				<span onClick={() => pop.current.close()}>close</span>
