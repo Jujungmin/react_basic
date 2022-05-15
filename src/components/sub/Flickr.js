@@ -1,4 +1,5 @@
 import Layout from '../common/Layout';
+import Popup from '../common/Popup';
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import Masonry from 'react-masonry-component';
@@ -7,8 +8,10 @@ const path = process.env.PUBLIC_URL;
 function Flickr() {
 	const frame = useRef(null);
 	const input = useRef(null);
+	const pop = useRef(null);
 	const [items, setItems] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [index, setIndex] = useState(0);
 	const [enableClick, setEnableClick] = useState(true);
 	
 	const masonryOptions = {
@@ -82,67 +85,80 @@ function Flickr() {
 
 	useEffect(() => {
 		fetchFlickr({
-			type: 'interest',
+			// 초기 이미지 세팅
+			type: 'user', // 'search'
 			count: 100,
+			user: '164021883@N04', // 불필요시 삭제
 		})
 	}, []);
 
 	return (
-		<Layout name={'Flickr'}>
-			<button onClick={showInterest}>interest</button>
+		<>
+			<Layout name={'Flickr'}>
+				<button onClick={showInterest}>interest</button>
 
-			<div className='searchBox'>
-				<input type='text' ref={input} onKeyUp={e => {
-					// enter누르면 search버튼 누름
-					if(e.key === 'Enter') showSearch();
-				}} />
-				<button onClick={showSearch}>search</button>
-			</div>
+				<div className='searchBox'>
+					<input type='text' ref={input} onKeyUp={e => {
+						// enter누르면 search버튼 누름
+						if(e.key === 'Enter') showSearch();
+					}} />
+					<button onClick={showSearch}>search</button>
+				</div>
 
-			{loading ? (
-				<img src={path + '/img/loading.gif'} className='loading' /> 
-			) : null}
+				{loading ? (
+					<img src={path + '/img/loading.gif'} className='loading' /> 
+				) : null}
 
-			<div className='frame' ref={frame}>
-				<Masonry elementType={'div'} options={masonryOptions}>
-					{items.map((item, idx) => {
-						return (
-							<article key={idx}>
-								<div className='inner'>
-									<div className='pic'>
-										<img src={`https://live.staticflickr.com/${item.server}/${item.id}_${item.secret}_m.jpg`} />
+				<div className='frame' ref={frame}>
+					<Masonry elementType={'div'} options={masonryOptions}>
+						{items.map((item, idx) => {
+							return (
+								<article key={idx}>
+									<div className='inner'>
+										<div className='pic' onClick={() => {
+											pop.current.open();
+											setIndex(idx)
+										}}>
+											<img src={`https://live.staticflickr.com/${item.server}/${item.id}_${item.secret}_m.jpg`} />
+										</div>
+										<h2>{item.title}</h2>
+
+										<div className='profile'>
+											<img src={`http://farm${item.farm}.staticflickr.com/${item.server}/buddyicons/${item.owner}.jpg`} 
+											onError={(e) => {
+												e.target.setAttribute(
+													'src',
+													'https://www.flickr.com/images/buddyicon.gif'
+												);
+											}}
+											/>
+											<span onClick={(e) => {
+												if(enableClick) {
+													setEnableClick(false);
+													setLoading(true);
+													frame.current.classList.remove('on');
+													fetchFlickr({
+														type: 'user',
+														count: 50,
+														user: e.currentTarget.innerText,
+													});
+												}
+											}}>{item.owner}</span>
+										</div>
 									</div>
-									<h2>{item.title}</h2>
+								</article>
+							)
+						})}
+					</Masonry>
+				</div>
+			</Layout>
 
-									<div className='profile'>
-										<img src={`http://farm${item.farm}.staticflickr.com/${item.server}/buddyicons/${item.owner}.jpg`} 
-										onError={(e) => {
-											e.target.setAttribute(
-												'src',
-												'https://www.flickr.com/images/buddyicon.gif'
-											);
-										}}
-										/>
-										<span onClick={(e) => {
-											if(enableClick) {
-												setEnableClick(false);
-												setLoading(true);
-												frame.current.classList.remove('on');
-												fetchFlickr({
-													type: 'user',
-													count: 50,
-													user: e.currentTarget.innerText,
-												});
-											}
-										}}>{item.owner}</span>
-									</div>
-								</div>
-							</article>
-						)
-					})}
-				</Masonry>
-			</div>
-		</Layout>
+			<Popup ref={pop}>
+				{items.length !== 0 ? <img src={`https://live.staticflickr.com/${items[index].server}/${items[index].id}_${items[index].secret}_b.jpg`} /> : null}
+				
+				<span className='close' onClick={() => pop.current.close()}>close</span>
+			</Popup>
+		</>
 		)
 	}
 
