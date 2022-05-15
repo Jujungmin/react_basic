@@ -28,3 +28,10 @@ export default function* rootSaga() {
 	yield all([fork(callFlickr)]);
 }
 
+/*
+	saga흐름 보는 방법
+	1. store.js에서 saga -> reducer에 미들웨어 처리
+	2. 컴포넌트 파일에서 초기액션객체를 dispatch로 saga.js로 전달
+	3. saga.js에서 전달받은 action데이터를 가공해서 다시 reducer.js에 전달
+	4. reducer.js에서 action타입에 따라 데이터 store에 전달
+*/
