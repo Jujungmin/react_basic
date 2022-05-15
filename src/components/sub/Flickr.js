@@ -165,7 +165,15 @@ function Flickr() {
 export default Flickr;
 
 /*
-keyDown : 키를 누르는 시점
-keyUp : 키를 눌렀다 떼는 시점
-keyPress : 키를 눌렀다 떼는 시점(한영변환 같은 특수키 적용 안됨)
+기존 redux 작업방식
+- 컴포넌트 함수에 axios요청을 해서 반환받은 데이터를 action생성함수를 통해서 action객체로 반환
+- 변환받은 action객체를 컴포넌트 마운트시 바로 reducer에 전달
+
+redux-saga 작업방식
+- reducer가 바로 store에 데이터를 저장하는 것이 아닌 reducer에 saga를 미들웨어로 추가
+- 컴포넌트 함수에서 action객체로 요청을 보냄
+- reducer가 바로 요청을 받는게 아닌 redux-saga가 요청을 받음
+- 미리 외부 파일로 api요청 함수를 정의해두고 redux-saga에 액션요청이 들어오면 api함수 호출
+- api 요청 완료된 반환값을 redux-saga를 통해서 reducer에 전달
+
 */
