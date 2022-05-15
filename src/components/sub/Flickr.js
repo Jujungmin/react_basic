@@ -1,15 +1,18 @@
 import Layout from '../common/Layout';
 import Popup from '../common/Popup';
 import { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
 import Masonry from 'react-masonry-component';
 const path = process.env.PUBLIC_URL;
 
 function Flickr() {
+	const { flickr } = useSelector((store) => store.flickrReducer);
+	const dispatch = useDispatch();
+	const [opt, setOpt] = useState({type: 'interest', count: 50});
+
 	const frame = useRef(null);
 	const input = useRef(null);
 	const pop = useRef(null);
-	const [items, setItems] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [index, setIndex] = useState(0);
 	const [enableClick, setEnableClick] = useState(true);
@@ -18,47 +21,22 @@ function Flickr() {
 		transitionDuration: '0.5s',
 	};
 
-	const fetchFlickr = async (opt) => {
-		const api_key = '8fba436cfe2e8ae7f3a3aafcf18574c6';
-		const method_interest = 'flickr.interestingness.getList';
-		const method_search = 'flickr.photos.search';
-		const method_user = 'flickr.people.getPhotos';
-		let url = '';
-
-		if (opt.type === 'interest') {
-			url = `https://www.flickr.com/services/rest/?method=${method_interest}&api_key=${api_key}&format=json&nojsoncallback=1&per_page=${opt.count}`;
-		}
-		if (opt.type === 'search') {
-			url = `https://www.flickr.com/services/rest/?method=${method_search}&api_key=${api_key}&format=json&nojsoncallback=1&per_page=${opt.count}&tags=${opt.tag}`;
-		}
-		if (opt.type === 'user') {
-			url = `https://www.flickr.com/services/rest/?method=${method_user}&api_key=${api_key}&format=json&nojsoncallback=1&per_page=${opt.count}&user_id=${opt.user}`;
-		}
-
-		await axios.get(url).then((json) => {
-			if(json.data.photos.photo.length === 0) {
-				alert('해당 검색어의 이미지가 없습니다');
-				return;
-			}
-			setItems(json.data.photos.photo);
-		});
-
+	const endLoading = () => {
 		setTimeout(() => {
 			frame.current.classList.add('on');
 			setLoading(false);
 			setTimeout(() => setEnableClick(true), 1000);
 		}, 1000);
-	};
+	}
 
 	const showInterest = () => {
 		if(enableClick) {
 			setEnableClick(false);
 			setLoading(true);
 			frame.current.classList.remove('on');
-			fetchFlickr({
-				type: 'interest',
-				count: 50,
-			})
+
+			setOpt({type: 'interest', count: 50});
+			endLoading();
 		}
 	};
 
@@ -75,22 +53,16 @@ function Flickr() {
 			setLoading(true);
 			frame.current.classList.remove('on');
 
-			fetchFlickr({
-				type: 'search',
-				count: 50,
-				tag: tag,
-			})
+			setOpt({type: 'search', count: 50});
+			endLoading();
 		}
 	};
 
 	useEffect(() => {
-		fetchFlickr({
-			// 초기 이미지 세팅
-			type: 'user', // 'search'
-			count: 100,
-			user: '164021883@N04', // 불필요시 삭제
-		})
-	}, []);
+		// action객체를 saga.js로 전달
+		dispatch({type: 'FLICKR_START', opt});
+		endLoading();
+	}, [opt]);
 
 	return (
 		<>
@@ -111,7 +83,7 @@ function Flickr() {
 
 				<div className='frame' ref={frame}>
 					<Masonry elementType={'div'} options={masonryOptions}>
-						{items.map((item, idx) => {
+						{flickr.map((item, idx) => {
 							return (
 								<article key={idx}>
 									<div className='inner'>
@@ -137,11 +109,8 @@ function Flickr() {
 													setEnableClick(false);
 													setLoading(true);
 													frame.current.classList.remove('on');
-													fetchFlickr({
-														type: 'user',
-														count: 50,
-														user: e.currentTarget.innerText,
-													});
+													
+													setOpt({type: 'user', count: 50, user: e.currentTarget.innerText})
 												}
 											}}>{item.owner}</span>
 										</div>
@@ -154,7 +123,7 @@ function Flickr() {
 			</Layout>
 
 			<Popup ref={pop}>
-				{items.length !== 0 ? <img src={`https://live.staticflickr.com/${items[index].server}/${items[index].id}_${items[index].secret}_b.jpg`} /> : null}
+				{flickr.length !== 0 ? <img src={`https://live.staticflickr.com/${flickr[index].server}/${flickr[index].id}_${flickr[index].secret}_b.jpg`} /> : null}
 				
 				<span className='close' onClick={() => pop.current.close()}>close</span>
 			</Popup>
