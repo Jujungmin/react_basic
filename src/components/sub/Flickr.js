@@ -18,8 +18,8 @@ function Flickr() {
 	const fetchFlickr = async (opt) => {
 		const api_key = '8fba436cfe2e8ae7f3a3aafcf18574c6';
 		const method_interest = 'flickr.interestingness.getList';
-
 		const method_search = 'flickr.photos.search';
+		const method_user = 'flickr.people.getPhotos';
 		let url = '';
 
 		if (opt.type === 'interest') {
@@ -27,6 +27,9 @@ function Flickr() {
 		}
 		if (opt.type === 'search') {
 			url = `https://www.flickr.com/services/rest/?method=${method_search}&api_key=${api_key}&format=json&nojsoncallback=1&per_page=${opt.count}&tags=${opt.tag}`;
+		}
+		if (opt.type === 'user') {
+			url = `https://www.flickr.com/services/rest/?method=${method_user}&api_key=${api_key}&format=json&nojsoncallback=1&per_page=${opt.count}&user_id=${opt.user}`;
 		}
 
 		await axios.get(url).then((json) => {
@@ -114,14 +117,24 @@ function Flickr() {
 									<div className='profile'>
 										<img src={`http://farm${item.farm}.staticflickr.com/${item.server}/buddyicons/${item.owner}.jpg`} 
 										onError={(e) => {
-											// 만약 해당 이미지요소의 프로필이미지가 없으면 error이벤트가 발생하여 src값을 setAttirbute로 대체이미지를 대신 출력
 											e.target.setAttribute(
 												'src',
 												'https://www.flickr.com/images/buddyicon.gif'
 											);
 										}}
 										/>
-										<span>{item.owner}</span>
+										<span onClick={(e) => {
+											if(enableClick) {
+												setEnableClick(false);
+												setLoading(true);
+												frame.current.classList.remove('on');
+												fetchFlickr({
+													type: 'user',
+													count: 50,
+													user: e.currentTarget.innerText,
+												});
+											}
+										}}>{item.owner}</span>
 									</div>
 								</div>
 							</article>
