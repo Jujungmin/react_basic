@@ -8,14 +8,14 @@ const path = process.env.PUBLIC_URL;
 function Flickr() {
 	const { flickr } = useSelector((store) => store.flickrReducer);
 	const dispatch = useDispatch();
-	const [opt, setOpt] = useState({type: 'interest', count: 50});
-
+	
 	const frame = useRef(null);
 	const input = useRef(null);
 	const pop = useRef(null);
 	const [loading, setLoading] = useState(true);
 	const [index, setIndex] = useState(0);
 	const [enableClick, setEnableClick] = useState(true);
+	const [opt, setOpt] = useState({type: 'interest', count: 50});
 	
 	const masonryOptions = {
 		transitionDuration: '0.5s',
@@ -36,7 +36,6 @@ function Flickr() {
 			frame.current.classList.remove('on');
 
 			setOpt({type: 'interest', count: 50});
-			endLoading();
 		}
 	};
 
@@ -54,15 +53,19 @@ function Flickr() {
 			frame.current.classList.remove('on');
 
 			setOpt({type: 'search', count: 50});
-			endLoading();
 		}
 	};
 
 	useEffect(() => {
-		// action객체를 saga.js로 전달
 		dispatch({type: 'FLICKR_START', opt});
-		endLoading();
 	}, [opt]);
+	
+	useEffect(() => {
+		// 기존의 endLoading함수를 api요청을 보낼때 실행하는게 아닌
+		// store를 통해서 데이터결과값이 새롭게 반활힐 때 실행
+		// 이때 처음 flickr값은 빈 배열이 들어오기 때문에 그때만 조건문으로 실행되지 않도록 처리
+		if(flickr.length !== 0) endLoading();
+	}, [flickr]);
 
 	return (
 		<>
