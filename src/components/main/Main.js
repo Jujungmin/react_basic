@@ -11,6 +11,8 @@ function Main() {
 	const main = useRef(null);
 	const pos = useRef([]);
 	const [index, setIndex] = useState(0);
+	// 현재 스크롤되는 값을 관리할 state 추가
+	const [scrolled, setScrolled] = useState(0);
 
 	//섹션들의 세로 위치값 반환함수
 	const getPos = () => {
@@ -22,8 +24,11 @@ function Main() {
 	//버튼 활성화 함수
 	const activation = () => {
 		const base = -200;
-		let scroll = window.scrollY;
+		const scroll = window.scrollY;
 		const btns = main.current.querySelectorAll('.btns li');
+
+		// 현재 스크롤이 되는 거리값을 scrolled state에 저장해서 관리
+		setScrolled(scroll);
 
 		pos.current.map((pos, idx) => {
 			if (scroll >= pos + base) {
@@ -60,7 +65,7 @@ function Main() {
 				<Header type={'main'} />
 				<Visual />
 				<News />
-				<Pics />
+				<Pics scrolled={scrolled} start={pos.current[2]} />
 				<Vids />
 				<Btns setIndex={setIndex} />
 			</main>

@@ -1,0 +1,26 @@
+.menuM {
+	width: 280px;
+	height: 100vh;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background: rgba(0, 0, 0, 0.9);
+	z-index: 5;
+	padding: 30px 50px;
+
+	h1 {
+		margin-bottom: 20px;
+		a {
+			color: #fff;
+		}
+	}
+
+	#gnbMo {
+		li {
+			margin-bottom: 15px;
+			a {
+				color: #eee;
+			}
+		}
+	}
+}

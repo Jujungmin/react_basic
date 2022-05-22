@@ -3,6 +3,7 @@
 @import 'common/footer';
 @import 'common/layout';
 @import 'common/popup';
+@import 'common/menu';
 
 //main
 @import 'main/visual';
@@ -13,7 +14,6 @@
 
 //sub
 @import 'sub/youtube';
-@import 'sub/gallery';
 @import 'sub/flickr';
 @import 'sub/department';
 @import 'sub/location';

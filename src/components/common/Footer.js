@@ -1,11 +1,8 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 
 function Footer() {
 	const path = process.env.PUBLIC_URL;
-	const members = useSelector((store) => 
-		store.memberReducer.members
-	)
+	const {members} = useSelector((store) => store.memberReducer);
 
 	return <footer>
 		2022 DCODELAB &copy; ALL RIGHTS RESERVED.
